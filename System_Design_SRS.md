@@ -132,10 +132,181 @@ Dưới đây là sơ đồ Use Case thể hiện ranh giới hệ thống, các
 
 ![Sơ đồ Use Case](assets/usecase.png)
 
+*Mã nguồn sơ đồ Mermaid (Use Case):*
+```mermaid
+graph LR
+    %% Actors
+    Customer["Khách hàng (Customer)"]
+    Staff["Nhân viên Lễ tân/Phục vụ (Staff)"]
+    Manager["Quản lý Chuỗi (Manager)"]
+
+    subgraph "HỆ THỐNG QUẢN LÝ KARAOKE & POS"
+        subgraph "Phân hệ Đặt phòng & Quản lý phòng"
+            UC_Book["Đặt phòng trước (Online)"]
+            UC_Checkin["Làm thủ tục Check-in"]
+            UC_Checkout["Làm thủ tục Check-out"]
+            UC_RoomStatus["Cập nhật trạng thái phòng"]
+        end
+
+        subgraph "Phân hệ POS & Gọi món"
+            UC_ViewMenu["Xem thực đơn (Digital Menu)"]
+            UC_Order["Gọi món (F&B / Dịch vụ)"]
+            UC_SyncKitchen["Đồng bộ đơn hàng Bếp/Bar"]
+        end
+
+        subgraph "Phân hệ Quản lý & Báo cáo"
+            UC_ConfigPrice["Cấu hình giá phòng & Khung giờ"]
+            UC_ManageInventory["Quản lý kho nguyên vật liệu"]
+            UC_Report["Xem báo cáo doanh thu"]
+            UC_Shift["Quản lý ca & Duyệt bàn giao quỹ"]
+        end
+    end
+
+    %% Relationships
+    Customer --> UC_Book
+    Customer --> UC_ViewMenu
+    Customer --> UC_Order
+
+    Staff --> UC_Checkin
+    Staff --> UC_RoomStatus
+    Staff --> UC_Order
+    Staff --> UC_Checkout
+    Staff --> UC_Shift
+
+    Manager --> UC_ConfigPrice
+    Manager --> UC_ManageInventory
+    Manager --> UC_Report
+    Manager --> UC_Shift
+
+    %% Relations inside Use Cases
+    UC_Checkout -.->|"<<include>>"| UC_RoomStatus
+    UC_Order -.->|"<<include>>"| UC_SyncKitchen
+```
+
 ### 3.2. Sơ đồ Thực thể Mối quan hệ (Entity Relationship Diagram - ERD)
 Sơ đồ ERD mô tả chi tiết thiết kế cơ sở dữ liệu quan hệ của hệ thống, bao gồm các ràng buộc khóa ngoại, quan hệ 1-N và các bảng trung gian cần thiết cho nghiệp vụ:
 
 ![Sơ đồ ERD](assets/erd.png)
+
+*Mã nguồn sơ đồ Mermaid (ERD):*
+```mermaid
+erDiagram
+    BRANCH ||--o{ STAFF : "thuộc"
+    BRANCH ||--o{ ROOM : "chứa"
+    ROOM_TYPE ||--o{ ROOM : "định nghĩa"
+    ROOM ||--o{ BOOKING : "được đặt"
+    STAFF ||--o{ BOOKING : "thực hiện"
+    STAFF ||--o{ SHIFT_REPORT : "chốt ca"
+    CUSTOMER ||--o{ BOOKING : "đặt bởi"
+    BOOKING ||--|| INVOICE : "xuất"
+    BOOKING ||--o{ SERVICE_ORDER : "gồm"
+    STAFF ||--o{ SERVICE_ORDER : "ghi nhận"
+    MENU_ITEM ||--o{ SERVICE_ORDER_DETAIL : "chứa trong"
+    SERVICE_ORDER ||--o{ SERVICE_ORDER_DETAIL : "gồm"
+    SHIFT_REPORT ||--o{ INVOICE : "thu tiền trong"
+
+    BRANCH {
+        int branch_id PK
+        string name "Tên chi nhánh"
+        string address "Địa chỉ"
+        string phone "Số điện thoại"
+    }
+
+    ROOM_TYPE {
+        int type_id PK
+        string name "Normal, VIP, Super VIP"
+        double base_price "Giá giờ gốc"
+        double golden_hour_price "Giá giờ vàng"
+        double weekend_price "Giá giờ cuối tuần"
+    }
+
+    ROOM {
+        int room_id PK
+        string room_number "Số phòng"
+        int type_id FK "Liên kết RoomType"
+        int branch_id FK "Liên kết Branch"
+        string status "Available, Occupied, Cleaning, Reserved"
+    }
+
+    STAFF {
+        int staff_id PK
+        string full_name "Họ tên nhân viên"
+        string role "Receptionist, Server, Kitchen, Manager"
+        int branch_id FK "Liên kết Branch"
+        string phone "Số điện thoại"
+    }
+
+    CUSTOMER {
+        int customer_id PK
+        string name "Tên khách hàng"
+        string phone "Số điện thoại"
+        string email "Email"
+    }
+
+    BOOKING {
+        int booking_id PK
+        int room_id FK "Liên kết Room"
+        int customer_id FK "Liên kết Customer"
+        int staff_id FK "Liên kết Staff thực hiện"
+        datetime booking_time "Thời gian đặt phòng trước"
+        datetime start_time "Thời gian nhận phòng thực tế"
+        datetime end_time "Thời gian trả phòng thực tế"
+        string status "Pending, CheckedIn, CheckedOut, Cancelled"
+    }
+
+    SERVICE_ORDER {
+        int order_id PK
+        int booking_id FK "Liên kết Booking"
+        int staff_id FK "Liên kết Staff phục vụ"
+        datetime order_time "Thời gian order"
+        string status "Pending, Processing, Completed, Cancelled"
+    }
+
+    MENU_ITEM {
+        int item_id PK
+        string name "Tên món / dịch vụ"
+        string category "Food, Drink, Service"
+        double price "Đơn giá"
+        int stock_qty "Số lượng tồn kho"
+    }
+
+    SERVICE_ORDER_DETAIL {
+        int detail_id PK
+        int order_id FK "Liên kết ServiceOrder"
+        int item_id FK "Liên kết MenuItem"
+        int quantity "Số lượng"
+        double unit_price "Đơn giá lúc đặt"
+        double total_price "Thành tiền detail"
+    }
+
+    INVOICE {
+        int invoice_id PK
+        int booking_id FK "Liên kết Booking"
+        int shift_id FK "Liên kết ShiftReport"
+        double room_charge "Tiền giờ hát"
+        double service_charge "Tiền dịch vụ F&B"
+        double discount_amount "Số tiền giảm giá"
+        double vat_amount "Thuế VAT"
+        double total_amount "Tổng tiền thanh toán"
+        string payment_method "Cash, Card, Transfer"
+        string status "Unpaid, Paid, Refunded"
+        datetime created_at "Thời gian xuất hóa đơn"
+    }
+
+    SHIFT_REPORT {
+        int shift_id PK
+        int staff_id FK "Nhân viên trực ca"
+        datetime start_time "Thời điểm mở ca"
+        datetime end_time "Thời điểm chốt ca"
+        double opening_cash "Tiền bàn giao đầu ca"
+        double cash_collected "Tiền mặt thu trong ca"
+        double transfer_collected "Tiền chuyển khoản thu trong ca"
+        double expected_cash "Tiền mặt lý thuyết"
+        double actual_cash "Tiền mặt đếm thực tế"
+        double discrepancy "Chênh lệch"
+        string status "Open, Closed"
+    }
+```
 
 ---
 
