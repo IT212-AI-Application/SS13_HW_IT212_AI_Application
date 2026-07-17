@@ -130,7 +130,7 @@ Phân hệ vận hành ở mức độ quản lý, đảm bảo dòng tiền và
 ### 3.1. Sơ đồ Use Case (Use Case Diagram)
 Dưới đây là sơ đồ Use Case thể hiện ranh giới hệ thống, các Actor chính và các hành vi tương tác được phân loại theo các phân hệ chức năng:
 
-![Sơ đồ Use Case](assets/usecase.png)
+![Sơ đồ Use Case](usecase.png)
 
 *Mã nguồn sơ đồ Mermaid (Use Case):*
 ```mermaid
@@ -186,7 +186,7 @@ graph LR
 ### 3.2. Sơ đồ Thực thể Mối quan hệ (Entity Relationship Diagram - ERD)
 Sơ đồ ERD mô tả chi tiết thiết kế cơ sở dữ liệu quan hệ của hệ thống, bao gồm các ràng buộc khóa ngoại, quan hệ 1-N và các bảng trung gian cần thiết cho nghiệp vụ:
 
-![Sơ đồ ERD](assets/erd.png)
+![Sơ đồ ERD](erd.png)
 
 *Mã nguồn sơ đồ Mermaid (ERD):*
 ```mermaid

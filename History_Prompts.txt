@@ -43,5 +43,4 @@ Yêu cầu:
 
 PROMPT 10:
 Để phục vụ việc nộp bài kiểm tra thực hành yêu cầu các sơ đồ Mermaid phải được kết xuất (render) thành hình ảnh thay vì để mã code thuần:
-Hãy viết một đoạn mã Python tự động đọc tài liệu `System_Design_SRS.md`, trích xuất các sơ đồ Mermaid, mã hóa Base64 và tải ảnh PNG đã render từ API của `mermaid.ink` về thư mục cục bộ `assets/` (dưới dạng `usecase.png` và `erd.png`). Sau đó, tự động sửa đổi nội dung của tài liệu `System_Design_SRS.md` để thay thế các block code Mermaid bằng các thẻ ảnh Markdown tương đối (ví dụ: `![Sơ đồ Use Case](assets/usecase.png)`).
-
+Hãy viết một đoạn mã Python tự động đọc tài liệu `System_Design_SRS.md`, trích xuất các sơ đồ Mermaid, mã hóa Base64 và tải ảnh PNG đã render từ API của `mermaid.ink` về thư mục gốc (dưới dạng `usecase.png` và `erd.png`). Sau đó, tự động sửa đổi nội dung của tài liệu `System_Design_SRS.md` để thay thế các block code Mermaid bằng các thẻ ảnh Markdown tương đối (ví dụ: `![Sơ đồ Use Case](usecase.png)`).
