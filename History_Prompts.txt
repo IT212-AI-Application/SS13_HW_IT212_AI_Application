@@ -1,0 +1,42 @@
+LỊCH SỬ CÁC CÂU LỆNH PROMPT (ITERATIVE PROMPTING) - THIẾT KẾ HỆ THỐNG QUẢN LÝ CHUỒI KARAOKE & POS
+--------------------------------------------------------------------------------------------------
+
+PROMPT 1:
+Chào bạn, tôi đang làm bài kiểm tra thực hành thiết kế hệ thống. Tôi chọn chủ đề: "Hệ thống Quản lý Chuỗi Phòng hát Karaoke (Karaoke Booking & POS)". Hệ thống này cần phục vụ ít nhất 3 Actors (ví dụ: Khách hàng, Nhân viên phục vụ/lễ tân, Quản lý chuỗi) và có tối thiểu 3 Modules cốt lõi (ví dụ: Đặt phòng & Quản lý trạng thái phòng, Gọi món & POS tại quầy, Quản lý chuỗi & Báo cáo doanh thu). Hãy giúp tôi phác thảo sơ bộ kiến trúc tổng thể, mô tả vai trò của từng Actor và chức năng chính của từng Module để tôi xem xét.
+
+PROMPT 2:
+Khung kiến trúc này rất tốt. Bây giờ, hãy viết chi tiết các User Stories cho từng Actor (Khách hàng, Nhân viên, Quản lý) theo định dạng chuẩn: "As a [role], I want to [action] so that [benefit]". Hãy phân chia các User Stories này tương ứng với 3 Module mà bạn đã phác thảo ở trên để làm rõ mối quan hệ giữa Actor và Module.
+
+PROMPT 3:
+Tuyệt vời. Đối với Phân hệ Đặt phòng & Quản lý Trạng thái Phòng, nghiệp vụ thực tế phức tạp hơn. Hãy bổ sung đặc tả chi tiết về quy tắc tính tiền giờ hát. Cụ thể:
+1. Có 3 loại phòng: Thường (Normal), VIP và Super VIP với mức giá giờ khác nhau.
+2. Giá phòng thay đổi theo khung giờ: Khung giờ vàng (18:00 - 23:00) sẽ đắt hơn khung giờ thường, và ngày cuối tuần (Thứ 6, 7, Chủ nhật) sẽ đắt hơn ngày thường.
+3. Có hỗ trợ làm tròn thời gian sử dụng (ví dụ: hát dưới 15 phút không tính tiền, từ 15-45 phút tính 0.5 giờ, trên 45 phút tính tròn 1 giờ).
+Hãy viết lại phần đặc tả nghiệp vụ chi tiết cho module đặt phòng này giúp tôi.
+
+PROMPT 4:
+Rất chi tiết! Tiếp theo là Phân hệ Gọi món & POS tại quầy. Hãy làm rõ quy trình đồng bộ đơn hàng dịch vụ (đồ ăn, thức uống) từ lúc Khách hàng hoặc Nhân viên gọi món tại phòng cho đến khi bếp/bar nhận lệnh, chế biến xong, phục vụ mang lên phòng và cập nhật vào hóa đơn tạm tính của phòng đó. Làm thế nào để đảm bảo dữ liệu không bị thất thoát và hóa đơn luôn được cập nhật theo thời gian thực (real-time)?
+
+PROMPT 5:
+Bây giờ, hãy dựng giúp tôi một sơ đồ Use Case bằng Mermaid để biểu diễn trực quan các Actor và các chức năng của họ trong 3 Module. Hãy đảm bảo sơ đồ phân chia rõ ràng ranh giới hệ thống (system boundary) và có các mối quan hệ <<include>> hoặc <<extend>> phù hợp (ví dụ: Thanh toán hóa đơn thì bắt buộc phải In hóa đơn trước).
+
+PROMPT 6:
+Tiếp theo là phần thiết kế cơ sở dữ liệu. Hãy tạo sơ đồ thực thể mối quan hệ ERD bằng Mermaid cho hệ thống này. Cơ sở dữ liệu cần lưu trữ thông tin về Khách hàng, Nhân viên, Phòng (Room), Loại phòng (RoomType), Đơn đặt phòng (Booking), Đơn gọi món (Order), Chi tiết gọi món (OrderDetail), Hóa đơn (Invoice) và Lịch sử thay đổi giá phòng. Hãy định nghĩa rõ ràng các mối quan hệ (1-N, N-N, 1-1) và các trường khóa chính (PK), khóa ngoại (FK) cho mỗi bảng.
+
+PROMPT 7:
+Sơ đồ ERD rất đầy đủ. Tuy nhiên, tôi muốn bạn tối ưu thêm một số điểm:
+1. Thêm trường trạng thái (status) cho cả Booking (Pending, CheckedIn, CheckedOut, Cancelled) và Invoice (Unpaid, Paid, Refunded).
+2. Đảm bảo có bảng trung gian để thể hiện mối quan hệ nhiều-nhiều (N-N) giữa Order và Menu Items.
+3. Thêm bảng Shift (Ca làm việc) để quản lý việc Nhân viên bàn giao quỹ tiền mặt tại quầy khi đổi ca và liên kết nó với Invoice để biết hóa đơn nào được thanh toán trong ca nào.
+Hãy cập nhật lại sơ đồ ERD Mermaid mới.
+
+PROMPT 8:
+Tuyệt vời. Để hệ thống có thể hoạt động, hãy thiết kế một số API Endpoint chính (RESTful API) dành cho việc giao tiếp giữa Frontend (Mobile App/Web) và Backend. Hãy chia nhóm API theo 3 phân hệ: Đặt phòng, POS Gọi món và Quản lý/Báo cáo. Mỗi API cần chỉ rõ Method, Path, Request Body mẫu và Response Body mẫu.
+
+PROMPT 9:
+Bây giờ, hãy tổng hợp toàn bộ các kết quả từ các bước thảo luận trên thành một tài liệu Đặc tả Hệ thống (SRS - Software Requirements Specification) hoàn chỉnh, chuyên nghiệp và có cấu trúc khoa học bằng tiếng Việt.
+Yêu cầu:
+- Sử dụng ngôn ngữ chuẩn của một System Analyst chuyên nghiệp.
+- Không thêm các câu chào hỏi hay kết luận thừa của AI ở đầu/cuối tài liệu (như "Dưới đây là tài liệu của bạn...", "Hy vọng tài liệu này giúp ích...").
+- Các sơ đồ Mermaid (Use Case và ERD) cần được đặt trong các block code ```mermaid để hiển thị chuẩn xác.
+- Bổ sung thêm các yêu cầu phi chức năng (Non-functional requirements) như bảo mật dữ liệu khách hàng, tính sẵn sàng (uptime), hiệu năng phản hồi đơn hàng dưới 2 giây.
