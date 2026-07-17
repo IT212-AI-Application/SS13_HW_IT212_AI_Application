@@ -40,3 +40,8 @@ Yêu cầu:
 - Không thêm các câu chào hỏi hay kết luận thừa của AI ở đầu/cuối tài liệu (như "Dưới đây là tài liệu của bạn...", "Hy vọng tài liệu này giúp ích...").
 - Các sơ đồ Mermaid (Use Case và ERD) cần được đặt trong các block code ```mermaid để hiển thị chuẩn xác.
 - Bổ sung thêm các yêu cầu phi chức năng (Non-functional requirements) như bảo mật dữ liệu khách hàng, tính sẵn sàng (uptime), hiệu năng phản hồi đơn hàng dưới 2 giây.
+
+PROMPT 10:
+Để phục vụ việc nộp bài kiểm tra thực hành yêu cầu các sơ đồ Mermaid phải được kết xuất (render) thành hình ảnh thay vì để mã code thuần:
+Hãy viết một đoạn mã Python tự động đọc tài liệu `System_Design_SRS.md`, trích xuất các sơ đồ Mermaid, mã hóa Base64 và tải ảnh PNG đã render từ API của `mermaid.ink` về thư mục cục bộ `assets/` (dưới dạng `usecase.png` và `erd.png`). Sau đó, tự động sửa đổi nội dung của tài liệu `System_Design_SRS.md` để thay thế các block code Mermaid bằng các thẻ ảnh Markdown tương đối (ví dụ: `![Sơ đồ Use Case](assets/usecase.png)`).
+
